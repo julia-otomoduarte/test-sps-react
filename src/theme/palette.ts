@@ -1,8 +1,6 @@
-// SPS Group – Paleta de cores oficial
-// Referência: https://www.spsgroup.com.br
+
 
 const palette = {
-  // Azul primário (identidade SPS)
   primary: {
     lighter: '#d0e4ff',
     light:   '#1a5dc8',
@@ -12,7 +10,7 @@ const palette = {
     contrastText: '#ffffff',
   },
 
-  // Laranja de destaque (accent)
+
   accent: {
     lighter: '#ffe3cc',
     light:   '#ffaa66',
@@ -22,7 +20,7 @@ const palette = {
     contrastText: '#ffffff',
   },
 
-  // Neutros
+
   grey: {
     100: '#f5f5f5',
     200: '#e0e0e0',
@@ -35,7 +33,7 @@ const palette = {
     900: '#111111',
   },
 
-  // Semânticas
+
   success: {
     light:   '#4caf50',
     main:    '#2e7d32',
@@ -61,13 +59,13 @@ const palette = {
     contrastText: '#ffffff',
   },
 
-  // Gradientes utilitários
+
   gradient: {
     primary: 'linear-gradient(160deg, #002277 0%, #003399 50%, #1a5dc8 100%)',
     accentOverlay: 'linear-gradient(135deg, rgba(255,102,0,0.15) 0%, rgba(0,51,153,0.05) 100%)',
   },
 
-  // Transparências frequentes
+
   alpha: {
     white10:  'rgba(255, 255, 255, 0.10)',
     white15:  'rgba(255, 255, 255, 0.15)',

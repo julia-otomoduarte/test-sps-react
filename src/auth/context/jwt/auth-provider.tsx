@@ -1,18 +1,18 @@
-import { useMemo, useEffect, useReducer, useCallback } from 'react';
+import { useMemo, useEffect, useReducer, useCallback } from "react";
 
-import { loginApi, registerApi } from 'src/services/api';
+import { loginApi, registerApi } from "src/services/api";
 
-import { setSession, isValidToken } from './utils';
-import { AuthContext } from './auth-context';
-import { AuthUserType, ActionMapType, AuthStateType } from '../../types';
+import { setSession, isValidToken } from "./utils";
+import { AuthContext } from "./auth-context";
+import { AuthUserType, ActionMapType, AuthStateType } from "../../types";
 
 // ----------------------------------------------------------------------
 
 enum Types {
-  INITIAL = 'INITIAL',
-  LOGIN = 'LOGIN',
-  REGISTER = 'REGISTER',
-  LOGOUT = 'LOGOUT',
+  INITIAL = "INITIAL",
+  LOGIN = "LOGIN",
+  REGISTER = "REGISTER",
+  LOGOUT = "LOGOUT",
 }
 
 type Payload = {
@@ -55,8 +55,8 @@ export function AuthProvider({ children }: Props) {
 
   // Restaura sessão ao carregar a aplicação
   const initialize = useCallback(async () => {
-    const token = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
+    const token = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
 
     if (token && isValidToken(token) && storedUser) {
       setSession(token);
@@ -77,13 +77,12 @@ export function AuthProvider({ children }: Props) {
     initialize();
   }, [initialize]);
 
-  // LOGIN
   const login = useCallback(async (email: string, password: string) => {
     const response = await loginApi(email, password);
     const { token, user } = response.data;
 
     setSession(token);
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user));
 
     dispatch({
       type: Types.LOGIN,
@@ -91,36 +90,39 @@ export function AuthProvider({ children }: Props) {
     });
   }, []);
 
-  // REGISTER — apenas cria o usuário, não faz login automático
-  const register = useCallback(async (name: string, email: string, password: string) => {
-    await registerApi(name, email, password);
-    dispatch({ type: Types.REGISTER });
-  }, []);
+  const register = useCallback(
+    async (name: string, email: string, password: string) => {
+      await registerApi(name, email, password);
+      dispatch({ type: Types.REGISTER });
+    },
+    [],
+  );
 
-  // LOGOUT
   const logout = useCallback(async () => {
     setSession(null);
     dispatch({ type: Types.LOGOUT });
   }, []);
 
-  // ----------------------------------------------------------------------
-
-  const checkAuthenticated = state.user ? 'authenticated' : 'unauthenticated';
-  const status = state.loading ? 'loading' : checkAuthenticated;
+  const checkAuthenticated = state.user ? "authenticated" : "unauthenticated";
+  const status = state.loading ? "loading" : checkAuthenticated;
 
   const memoizedValue = useMemo(
     () => ({
       user: state.user,
-      method: 'jwt',
-      loading: status === 'loading',
-      authenticated: status === 'authenticated',
-      unauthenticated: status === 'unauthenticated',
+      method: "jwt",
+      loading: status === "loading",
+      authenticated: status === "authenticated",
+      unauthenticated: status === "unauthenticated",
       login,
       register,
       logout,
     }),
-    [login, logout, register, state.user, status]
+    [login, logout, register, state.user, status],
   );
 
-  return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={memoizedValue}>
+      {children}
+    </AuthContext.Provider>
+  );
 }

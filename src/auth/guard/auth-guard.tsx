@@ -1,17 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
-import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
+import { paths } from "src/routes/paths";
+import { useRouter } from "src/routes/hooks";
 
-import { SplashScreen } from 'src/components/loading-screen';
+import { SplashScreen } from "src/components/loading-screen";
 
-import { useAuthContext } from '../hooks';
-
-// ----------------------------------------------------------------------
+import { useAuthContext } from "../hooks";
 
 const LOGIN_PATH = paths.auth.jwt.login;
-
-// ----------------------------------------------------------------------
 
 type Props = {
   children: React.ReactNode;
@@ -22,8 +18,6 @@ export default function AuthGuard({ children }: Props) {
 
   return <>{loading ? <SplashScreen /> : <Container>{children}</Container>}</>;
 }
-
-// ----------------------------------------------------------------------
 
 function Container({ children }: Props) {
   const router = useRouter();
