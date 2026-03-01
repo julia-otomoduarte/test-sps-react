@@ -8,10 +8,9 @@ export type ChangePasswordFormValues = {
 export const changePasswordSchema: yup.ObjectSchema<ChangePasswordFormValues> = yup.object({
   oldPassword: yup
     .string()
-    .required('Senha atual é obrigatória')
-    .min(6, 'Senha deve ter pelo menos 6 caracteres'),
+    .required('Senha atual é obrigatória'),
   newPassword: yup
     .string()
     .required('Nova senha é obrigatória')
-    .min(6, 'Nova senha deve ter pelo menos 6 caracteres'),
+    .min(4, 'Nova senha deve ter pelo menos 4 caracteres'),
 });

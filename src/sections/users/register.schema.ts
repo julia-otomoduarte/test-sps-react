@@ -18,5 +18,5 @@ export const registerSchema: yup.ObjectSchema<RegisterFormValues> = yup.object({
   password: yup
     .string()
     .required('Senha é obrigatória')
-    .min(6, 'Senha deve ter pelo menos 6 caracteres'),
+    .min(4, 'Senha deve ter pelo menos 4 caracteres'),
 });

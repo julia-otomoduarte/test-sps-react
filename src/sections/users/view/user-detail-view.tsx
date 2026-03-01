@@ -51,11 +51,9 @@ export default function UserDetailView({ id }: Props) {
   const [pageLoading, setPageLoading] = useState(true);
   const [pageError, setPageError] = useState("");
 
-  // --- Dialog: Deletar ---
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
-  // --- Dialog: Trocar Senha ---
   const [pwOpen, setPwOpen] = useState(false);
 
   const canManage =
@@ -80,9 +78,6 @@ export default function UserDetailView({ id }: Props) {
       )
       .finally(() => setPageLoading(false));
   }, [id]);
-
-  // ----------------------------------------------------------------------
-  // Handlers
 
   const handleDelete = async () => {
     setDeleteLoading(true);
@@ -109,10 +104,9 @@ export default function UserDetailView({ id }: Props) {
       setPwOpen(false);
       resetPw();
     } catch (err: any) {
-      enqueueSnackbar(
-        err.response?.data?.message || "Erro ao alterar senha",
-        { variant: "error" },
-      );
+      enqueueSnackbar(err.response?.data?.message || "Erro ao alterar senha", {
+        variant: "error",
+      });
     }
   };
 
@@ -126,9 +120,6 @@ export default function UserDetailView({ id }: Props) {
     await logout();
     navigate(paths.auth.jwt.login);
   };
-
-  // ----------------------------------------------------------------------
-  // Render
 
   return (
     <BooleanPermissionGuard isLoading={pageLoading} canView={!pageError}>
@@ -199,7 +190,11 @@ export default function UserDetailView({ id }: Props) {
           </Card>
 
           {canManage && (
-            <Stack direction="row" spacing={2} sx={{ mt: 3 }} flexWrap="wrap">
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={2}
+              sx={{ mt: 3 }}
+            >
               <Button
                 variant="contained"
                 onClick={() => navigate(paths.dashboard.user.edit(id))}
@@ -240,13 +235,13 @@ export default function UserDetailView({ id }: Props) {
               Tem certeza que deseja excluir o usuário{" "}
               <strong>{user?.name}</strong>? Esta ação não pode ser desfeita.
             </Typography>
-
           </DialogContent>
 
           <DialogActions>
             <Button
               onClick={() => setDeleteOpen(false)}
               disabled={deleteLoading}
+              variant="outlined"
             >
               Cancelar
             </Button>
@@ -256,7 +251,7 @@ export default function UserDetailView({ id }: Props) {
               variant="contained"
               disabled={deleteLoading}
             >
-              {deleteLoading ? "Deletando..." : "Confirmar exclusão"}
+              {deleteLoading ? "Deletando..." : "Confirmar"}
             </Button>
           </DialogActions>
         </Dialog>
@@ -297,7 +292,11 @@ export default function UserDetailView({ id }: Props) {
           </DialogContent>
 
           <DialogActions>
-            <Button onClick={closePwDialog} disabled={pwSubmitting}>
+            <Button
+              onClick={closePwDialog}
+              disabled={pwSubmitting}
+              variant="outlined"
+            >
               Cancelar
             </Button>
             <Button
