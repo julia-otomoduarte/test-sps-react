@@ -19,9 +19,9 @@ import CardContent from '@mui/material/CardContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import CircularProgress from '@mui/material/CircularProgress';
 
 import { useAuthContext } from 'src/auth/hooks';
+import { BooleanPermissionGuard } from 'src/auth/guard';
 import { getUserApi, deleteUserApi, updatePasswordApi, User } from 'src/services/api';
 import { paths } from 'src/routes/paths';
 import { changePasswordSchema, ChangePasswordFormValues } from '../change-password.schema';
@@ -118,26 +118,8 @@ export default function UserDetailView({ id }: Props) {
   // ----------------------------------------------------------------------
   // Render
 
-  if (pageLoading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (pageError) {
-    return (
-      <Box sx={{ p: 4 }}>
-        <Alert severity="error">{pageError}</Alert>
-        <Button sx={{ mt: 2 }} onClick={() => navigate(paths.dashboard.root)}>
-          Voltar ao dashboard
-        </Button>
-      </Box>
-    );
-  }
-
   return (
+    <BooleanPermissionGuard isLoading={pageLoading} canView={!pageError}>
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
       {/* Header */}
       <AppBar position="static" elevation={1}>
@@ -304,5 +286,6 @@ export default function UserDetailView({ id }: Props) {
         </DialogActions>
       </Dialog>
     </Box>
+    </BooleanPermissionGuard>
   );
 }

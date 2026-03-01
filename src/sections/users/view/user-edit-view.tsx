@@ -13,9 +13,9 @@ import Toolbar from '@mui/material/Toolbar';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
-import CircularProgress from '@mui/material/CircularProgress';
 
 import { useAuthContext } from 'src/auth/hooks';
+import { BooleanPermissionGuard } from 'src/auth/guard';
 import { getUserApi, updateUserApi } from 'src/services/api';
 import { paths } from 'src/routes/paths';
 import { userEditSchema, UserEditFormValues } from '../user-edit.schema';
@@ -71,28 +71,8 @@ export default function UserEditView({ id }: Props) {
 
   // ----------------------------------------------------------------------
 
-  if (pageLoading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (!canEdit) {
-    return (
-      <Box sx={{ p: 4 }}>
-        <Alert severity="error">
-          Você não tem permissão para editar este usuário.
-        </Alert>
-        <Button sx={{ mt: 2 }} onClick={() => navigate(paths.dashboard.root)}>
-          Voltar ao dashboard
-        </Button>
-      </Box>
-    );
-  }
-
   return (
+    <BooleanPermissionGuard isLoading={pageLoading} canView={canEdit}>
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
       {/* Header */}
       <AppBar position="static" elevation={1}>
@@ -163,5 +143,6 @@ export default function UserEditView({ id }: Props) {
         </Card>
       </Box>
     </Box>
+    </BooleanPermissionGuard>
   );
 }
