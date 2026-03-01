@@ -1,29 +1,31 @@
-import { useState } from 'react';
-import { useForm, type Resolver } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useForm, type Resolver } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import Alert from "@mui/material/Alert";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
-import { useAuthContext } from 'src/auth/hooks';
-import { paths } from 'src/routes/paths';
-import { loginSchema, LoginFormValues } from '../login.schema';
-import palette from 'src/theme/palette';
+import { useAuthContext } from "src/auth/hooks";
+import { paths } from "src/routes/paths";
+import { loginSchema, LoginFormValues } from "../login.schema";
+import palette from "src/theme/palette";
+import { useSnackbar } from "notistack";
 
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
   const { login } = useAuthContext();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -34,50 +36,55 @@ export default function LoginView() {
   });
 
   const onSubmit = async (data: LoginFormValues) => {
-    setError('');
+    setError("");
     try {
       await login(data.email, data.password);
+      enqueueSnackbar("Login realizado com sucesso!", { variant: "success" });
       navigate(paths.dashboard.root);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Email ou senha inválidos');
+      enqueueSnackbar(
+        err.response?.data?.message || "Email ou senha inválidos",
+        { variant: "error" },
+      );
+      setError(err.response?.data?.message || "Email ou senha inválidos");
     }
   };
 
   return (
     <Box
       sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
         backgroundImage:
           "linear-gradient(rgba(153, 208, 245, 0.5), rgba(153, 208, 245, 0.5)), url('/background.jpg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
-      <Card sx={{ width: '100%', maxWidth: 420, borderRadius: 5 }}>
+      <Card sx={{ width: "100%", maxWidth: 420, borderRadius: 5 }}>
         <Stack
           sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '.5rem',
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: ".5rem",
             py: 2,
             bgcolor: palette.primary.dark,
-            color: '#fff',
-            minHeight: '100px',
+            color: "#fff",
+            minHeight: "100px",
           }}
         >
           <img src="/logo_sps.png" alt="Logo SPS" height={40} width={40} />
           <Stack
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'end',
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "end",
             }}
           >
             <Typography fontWeight={600} fontSize="2rem" lineHeight={1}>
@@ -108,7 +115,7 @@ export default function LoginView() {
                 type="email"
                 fullWidth
                 autoComplete="email"
-                {...register('email')}
+                {...register("email")}
                 error={!!errors.email}
                 helperText={errors.email?.message}
               />
@@ -118,7 +125,7 @@ export default function LoginView() {
                 type="password"
                 fullWidth
                 autoComplete="current-password"
-                {...register('password')}
+                {...register("password")}
                 error={!!errors.password}
                 helperText={errors.password?.message}
               />
@@ -131,13 +138,13 @@ export default function LoginView() {
                 disabled={isSubmitting}
                 color="primary"
               >
-                {isSubmitting ? 'Entrando...' : 'Entrar'}
+                {isSubmitting ? "Entrando..." : "Entrar"}
               </Button>
             </Stack>
           </Box>
 
           <Typography textAlign="center" variant="body2">
-            Não tem uma conta?{' '}
+            Não tem uma conta?{" "}
             <Link
               color="primary"
               component={RouterLink}

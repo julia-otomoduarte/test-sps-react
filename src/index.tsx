@@ -4,6 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "@mui/material/styles";
 
+import { SnackbarProvider } from "notistack";
+
 import { AuthProvider } from "./auth/context/jwt";
 import Router from "./routes/sections";
 import theme from "./theme/theme";
@@ -18,9 +20,11 @@ root.render(
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <AuthProvider>
-            <Suspense>
-              <Router />
-            </Suspense>
+            <SnackbarProvider maxSnack={3}>
+              <Suspense>
+                <Router />
+              </Suspense>
+            </SnackbarProvider>
           </AuthProvider>
         </BrowserRouter>
       </ThemeProvider>

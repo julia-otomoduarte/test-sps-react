@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm, type Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -22,6 +23,7 @@ import palette from "src/theme/palette";
 export default function RegisterView() {
   const { register } = useAuthContext();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [error, setError] = useState("");
 
@@ -37,9 +39,16 @@ export default function RegisterView() {
     setError("");
     try {
       await register(data.name, data.email, data.password);
+      enqueueSnackbar("Cadastro realizado com sucesso!", {
+        variant: "success",
+      });
       navigate(paths.auth.jwt.login);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Erro ao realizar cadastro");
+      enqueueSnackbar(
+        err.response?.data?.message || "Erro ao cadastrar. Tente novamente.",
+        { variant: "error" },
+      );
+      setError(err.response?.data?.message || "Erro ao cadastrar");
     }
   };
 
