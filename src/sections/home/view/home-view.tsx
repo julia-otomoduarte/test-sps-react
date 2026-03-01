@@ -82,22 +82,6 @@ export default function HomeView() {
             </Box>
           ) : null}
         </Stack>
-
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={() => navigate("/auth/login")}
-          sx={{
-            color: primary.main,
-            borderColor: primary.main,
-            borderRadius: "20px",
-            px: 2.5,
-            fontWeight: 600,
-            "&:hover": { bgcolor: primary.main, color: "#fff" },
-          }}
-        >
-          Entrar
-        </Button>
       </Box>
 
       {/* Hero */}
@@ -166,8 +150,8 @@ export default function HomeView() {
               lineHeight: 1.7,
             }}
           >
-            Realize o login para acessar todos os conteúdos e funcionalidades
-            da plataforma.
+            Realize o login para acessar todos os conteúdos e funcionalidades da
+            plataforma.
           </Typography>
 
           <Button
