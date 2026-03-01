@@ -35,7 +35,7 @@ yarn
 
 Certifique-se de que o servidor `test-sps-server` está rodando em `http://localhost:3000` antes de iniciar o front-end. Consulte o README do repositório da API para instruções.
 
-> Link do github da API -> `https://github.com/julia-otomoduarte/sps-test-backend`
+> Link do repositório da API -> `https://github.com/julia-otomoduarte/sps-test-backend`
 
 ### 3. Inicie o front-end
 
