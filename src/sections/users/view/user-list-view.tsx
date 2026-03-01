@@ -21,6 +21,7 @@ import Paper from "@mui/material/Paper";
 import { useAuthContext } from "src/auth/hooks";
 import { getUsersApi, User } from "src/services/api";
 import { paths } from "src/routes/paths";
+import { translateUserType } from "src/utils/translate-user-type";
 import { Stack } from "@mui/material";
 
 // ----------------------------------------------------------------------
@@ -49,7 +50,7 @@ export default function UserListView() {
     navigate(paths.auth.jwt.login);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
@@ -85,7 +86,7 @@ export default function UserListView() {
             <Typography variant="body2" sx={{ opacity: 0.85 }}>
               {authUser?.name}{" "}
             </Typography>
-            <Chip label={authUser?.type} color="info" />
+            <Chip label={translateUserType(authUser?.type ?? "")} color="info" />
           </Stack>
 
           <Button onClick={handleLogout} variant="contained" color="secondary">
@@ -95,14 +96,25 @@ export default function UserListView() {
       </AppBar>
 
       <Box sx={{ p: 4, maxWidth: 1200, mx: "auto", mt: 4 }}>
-        <Typography
-          variant="h5"
-          fontWeight={600}
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
           sx={{ mb: 3 }}
-          color="textPrimary"
         >
-          Lista de Usuários
-        </Typography>
+          <Typography variant="h5" fontWeight={600} color="textPrimary">
+            Lista de Usuários
+          </Typography>
+
+          {authUser?.type === "admin" && (
+            <Button
+              variant="contained"
+              onClick={() => navigate(paths.dashboard.user.create)}
+            >
+              Cadastrar Usuário
+            </Button>
+          )}
+        </Stack>
 
         {loading && (
           <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
@@ -149,7 +161,7 @@ export default function UserListView() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>
                       <Chip
-                        label={user.type}
+                        label={translateUserType(user.type)}
                         size="small"
                         color={user.type === "admin" ? "primary" : "default"}
                       />

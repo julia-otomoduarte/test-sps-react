@@ -83,39 +83,21 @@ export default function HomeView() {
           ) : null}
         </Stack>
 
-        <Stack direction="row" spacing={1.5}>
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => navigate("/auth/login")}
-            sx={{
-              color: primary.main,
-              borderColor: primary.main,
-              borderRadius: "20px",
-              px: 2.5,
-              fontWeight: 600,
-              "&:hover": { bgcolor: primary.main, color: "#fff" },
-            }}
-          >
-            Entrar
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            onClick={() => navigate("/auth/register")}
-            sx={{
-              bgcolor: primary.main,
-              color: "#fff",
-              borderRadius: "20px",
-              px: 2.5,
-              fontWeight: 600,
-              boxShadow: "none",
-              "&:hover": { bgcolor: primary.dark, boxShadow: "none" },
-            }}
-          >
-            Cadastrar
-          </Button>
-        </Stack>
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={() => navigate("/auth/login")}
+          sx={{
+            color: primary.main,
+            borderColor: primary.main,
+            borderRadius: "20px",
+            px: 2.5,
+            fontWeight: 600,
+            "&:hover": { bgcolor: primary.main, color: "#fff" },
+          }}
+        >
+          Entrar
+        </Button>
       </Box>
 
       {/* Hero */}
@@ -184,54 +166,31 @@ export default function HomeView() {
               lineHeight: 1.7,
             }}
           >
-            Realize o login ou cadastre-se para acessar todos os conteúdos e
-            funcionalidades da plataforma.
+            Realize o login para acessar todos os conteúdos e funcionalidades
+            da plataforma.
           </Typography>
 
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            spacing={2}
-            justifyContent="center"
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => navigate("/auth/login")}
+            sx={{
+              bgcolor: primary.main,
+              color: "#fff",
+              px: 5,
+              py: 1.5,
+              fontSize: 16,
+              fontWeight: 700,
+              borderRadius: "30px",
+              boxShadow: `0 4px 20px rgba(0,51,153,0.25)`,
+              "&:hover": {
+                bgcolor: primary.dark,
+                boxShadow: `0 6px 24px rgba(0,51,153,0.35)`,
+              },
+            }}
           >
-            <Button
-              variant="contained"
-              size="large"
-              onClick={() => navigate("/auth/login")}
-              sx={{
-                bgcolor: primary.main,
-                color: "#fff",
-                px: 5,
-                py: 1.5,
-                fontSize: 16,
-                fontWeight: 700,
-                borderRadius: "30px",
-                boxShadow: `0 4px 20px rgba(0,51,153,0.25)`,
-                "&:hover": {
-                  bgcolor: primary.dark,
-                  boxShadow: `0 6px 24px rgba(0,51,153,0.35)`,
-                },
-              }}
-            >
-              Fazer Login
-            </Button>
-            <Button
-              variant="outlined"
-              size="large"
-              onClick={() => navigate("/auth/register")}
-              sx={{
-                color: primary.main,
-                borderColor: primary.main,
-                px: 5,
-                py: 1.5,
-                fontSize: 16,
-                fontWeight: 600,
-                borderRadius: "30px",
-                "&:hover": { bgcolor: primary.main, color: "#fff" },
-              }}
-            >
-              Criar Conta
-            </Button>
-          </Stack>
+            Fazer Login
+          </Button>
         </Container>
       </Box>
 

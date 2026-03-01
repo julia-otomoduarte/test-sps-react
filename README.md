@@ -67,7 +67,7 @@ A aplicação estará disponível em `http://localhost:3001`.
 
 ### Landing Page — `/`
 
-Página de apresentação do sistema com acesso rápido às ações de login e cadastro. Exibe o nome e a identidade visual da SPS Group.
+Página de apresentação do sistema com acesso rápido ao login. Exibe o nome e a identidade visual da SPS Group.
 
 > Usuários já autenticados são redirecionados automaticamente ao dashboard ao tentar acessar rotas de autenticação.
 
@@ -82,15 +82,6 @@ Formulário de autenticação com **email** e **senha**. Ao realizar login com s
 
 ---
 
-### Cadastro — `/auth/register`
-
-Formulário para criação de uma nova conta com **nome**, **email** e **senha**. Após o cadastro, o usuário é redirecionado à tela de login.
-
-- Validação de formato de e-mail e tamanho mínimo de senha.
-- Exibe feedback de erro retornado pela API (ex.: e-mail já cadastrado).
-
----
-
 ### Lista de Usuários — `/dashboard`
 
 Tabela paginada com todos os usuários cadastrados no sistema. Cada linha exibe:
@@ -99,6 +90,8 @@ Tabela paginada com todos os usuários cadastrados no sistema. Cada linha exibe:
 - Clique em qualquer linha navega para o **detalhe** daquele usuário.
 
 Inclui controles de paginação com opções de 10, 25 ou 50 itens por página. O nome e o tipo do usuário autenticado são exibidos na barra superior.
+
+O botão **Cadastrar Usuário** é exibido acima da tabela exclusivamente para usuários do tipo `admin`.
 
 > Rota protegida — requer autenticação.
 
@@ -115,6 +108,8 @@ Ações disponíveis (visíveis apenas para **admin** ou para o **próprio usuá
 | **Editar**       | Navega para o formulário de edição               |
 | **Trocar Senha** | Abre um dialog para alterar a senha atual        |
 | **Deletar**      | Abre um dialog de confirmação e remove o usuário |
+
+> O botão **Deletar** não é exibido quando o usuário visualizado é do tipo `admin`, impedindo a exclusão do administrador do sistema.
 
 Todas as ações exibem notificações de sucesso ou erro via snackbar.
 
@@ -147,10 +142,12 @@ Exibida para qualquer rota inexistente. O botão de retorno redireciona de forma
 
 O sistema possui dois perfis de usuário:
 
-| Perfil  | Permissões                                                                       |
-| ------- | -------------------------------------------------------------------------------- |
-| `admin` | Visualiza, edita, troca senha e deleta qualquer usuário                          |
-| `user`  | Visualiza todos os usuários, mas só edita, troca senha e deleta o próprio perfil |
+| Perfil  | Permissões                                                                                        |
+| ------- | ------------------------------------------------------------------------------------------------- |
+| `admin` | Visualiza, edita e troca senha de qualquer usuário; deleta usuários do tipo `user`; cadastra novos usuários |
+| `user`  | Visualiza todos os usuários, mas só edita, troca senha e deleta o próprio perfil                  |
+
+> Usuários do tipo `admin` **não podem ser deletados** pelo sistema. O cadastro de novos usuários é restrito a administradores autenticados.
 
 A verificação de permissão é feita tanto no front-end (para exibição dos botões) quanto pela API (que retorna `403` para operações não autorizadas).
 
@@ -159,12 +156,12 @@ A verificação de permissão é feita tanto no front-end (para exibição dos b
 ## Estrutura de Rotas
 
 ```
-/                           → Landing Page
-/auth/login                 → Login
-/auth/register              → Cadastro
-/dashboard                  → Lista de Usuários   (autenticado)
-/dashboard/users/:id/detail → Detalhe do Usuário  (autenticado)
-/dashboard/users/:id/edit   → Editar Usuário      (autenticado)
-/404                        → Página não encontrada
-*                           → Redireciona para /404
+/                              → Landing Page
+/auth/login                    → Login
+/dashboard                     → Lista de Usuários        (autenticado)
+/dashboard/users/create        → Cadastrar Usuário        (autenticado — admin)
+/dashboard/users/:id/detail    → Detalhe do Usuário       (autenticado)
+/dashboard/users/:id/edit      → Editar Usuário           (autenticado)
+/404                           → Página não encontrada
+*                              → Redireciona para /404
 ```

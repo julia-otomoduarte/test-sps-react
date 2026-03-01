@@ -142,18 +142,6 @@ export default function LoginView() {
               </Button>
             </Stack>
           </Box>
-
-          <Typography textAlign="center" variant="body2">
-            Não tem uma conta?{" "}
-            <Link
-              color="primary"
-              component={RouterLink}
-              to={paths.auth.jwt.register}
-              underline="hover"
-            >
-              Cadastre-se
-            </Link>
-          </Typography>
         </Stack>
       </Card>
     </Box>

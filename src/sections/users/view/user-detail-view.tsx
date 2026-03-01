@@ -30,6 +30,7 @@ import {
   User,
 } from "src/services/api";
 import { paths } from "src/routes/paths";
+import { translateUserType } from "src/utils/translate-user-type";
 import {
   changePasswordSchema,
   ChangePasswordFormValues,
@@ -180,7 +181,7 @@ export default function UserDetailView({ id }: Props) {
                     Tipo:
                   </Typography>
                   <Chip
-                    label={user?.type}
+                    label={translateUserType(user?.type ?? "")}
                     size="small"
                     color={user?.type === "admin" ? "primary" : "default"}
                   />
@@ -211,14 +212,16 @@ export default function UserDetailView({ id }: Props) {
                 Trocar Senha
               </Button>
 
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={() => setDeleteOpen(true)}
-                startIcon={<Icon icon="material-symbols:delete" />}
-              >
-                Deletar
-              </Button>
+              {user?.type !== "admin" && (
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => setDeleteOpen(true)}
+                  startIcon={<Icon icon="material-symbols:delete" />}
+                >
+                  Deletar
+                </Button>
+              )}
             </Stack>
           )}
         </Box>
