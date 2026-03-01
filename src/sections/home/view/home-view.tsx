@@ -82,6 +82,22 @@ export default function HomeView() {
             </Box>
           ) : null}
         </Stack>
+
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={() => navigate("/auth/login")}
+          sx={{
+            color: primary.main,
+            borderColor: primary.main,
+            borderRadius: "20px",
+            px: 2.5,
+            fontWeight: 600,
+            "&:hover": { bgcolor: primary.main, color: "#fff" },
+          }}
+        >
+          Entrar
+        </Button>
       </Box>
 
       {/* Hero */}
