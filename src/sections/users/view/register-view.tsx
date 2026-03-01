@@ -16,7 +16,6 @@ import { useAuthContext } from "src/auth/hooks";
 import { paths } from "src/routes/paths";
 import { registerSchema, RegisterFormValues } from "../register.schema";
 import palette from "src/theme/palette";
-import { Divider } from "@mui/material";
 
 // ----------------------------------------------------------------------
 

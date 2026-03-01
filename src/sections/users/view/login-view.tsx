@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import { useAuthContext } from 'src/auth/hooks';
 import { paths } from 'src/routes/paths';
 import { loginSchema, LoginFormValues } from '../login.schema';
+import palette from 'src/theme/palette';
 
 // ----------------------------------------------------------------------
 
@@ -49,12 +50,52 @@ export default function LoginView() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        bgcolor: 'grey.100',
+        backgroundImage:
+          "linear-gradient(rgba(153, 208, 245, 0.5), rgba(153, 208, 245, 0.5)), url('/background.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
-      <Card sx={{ p: 4, width: '100%', maxWidth: 420 }}>
-        <Stack spacing={3}>
-          <Typography variant="h4" textAlign="center" fontWeight={700}>
+      <Card sx={{ width: '100%', maxWidth: 420, borderRadius: 5 }}>
+        <Stack
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '.5rem',
+            py: 2,
+            bgcolor: palette.primary.dark,
+            color: '#fff',
+            minHeight: '100px',
+          }}
+        >
+          <img src="/logo_sps.png" alt="Logo SPS" height={40} width={40} />
+          <Stack
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'end',
+            }}
+          >
+            <Typography fontWeight={600} fontSize="2rem" lineHeight={1}>
+              SPS
+            </Typography>
+            <Typography fontWeight={400} fontSize="1rem">
+              Group
+            </Typography>
+          </Stack>
+        </Stack>
+
+        <Stack spacing={3} sx={{ p: 4 }}>
+          <Typography
+            variant="h5"
+            textAlign="start"
+            fontWeight={700}
+            color={palette.grey[700]}
+          >
             Entrar
           </Typography>
 
@@ -88,6 +129,7 @@ export default function LoginView() {
                 size="large"
                 fullWidth
                 disabled={isSubmitting}
+                color="primary"
               >
                 {isSubmitting ? 'Entrando...' : 'Entrar'}
               </Button>
@@ -96,7 +138,12 @@ export default function LoginView() {
 
           <Typography textAlign="center" variant="body2">
             Não tem uma conta?{' '}
-            <Link component={RouterLink} to={paths.auth.jwt.register} underline="hover">
+            <Link
+              color="primary"
+              component={RouterLink}
+              to={paths.auth.jwt.register}
+              underline="hover"
+            >
               Cadastre-se
             </Link>
           </Typography>
