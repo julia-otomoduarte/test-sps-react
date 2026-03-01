@@ -1,20 +1,22 @@
-import { useState } from 'react';
-import { useForm, type Resolver } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useForm, type Resolver } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import Alert from "@mui/material/Alert";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
-import { useAuthContext } from 'src/auth/hooks';
-import { paths } from 'src/routes/paths';
-import { registerSchema, RegisterFormValues } from '../register.schema';
+import { useAuthContext } from "src/auth/hooks";
+import { paths } from "src/routes/paths";
+import { registerSchema, RegisterFormValues } from "../register.schema";
+import palette from "src/theme/palette";
+import { Divider } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +24,7 @@ export default function RegisterView() {
   const { register } = useAuthContext();
   const navigate = useNavigate();
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const {
     register: registerField,
@@ -33,28 +35,68 @@ export default function RegisterView() {
   });
 
   const onSubmit = async (data: RegisterFormValues) => {
-    setError('');
+    setError("");
     try {
       await register(data.name, data.email, data.password);
       navigate(paths.auth.jwt.login);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Erro ao realizar cadastro');
+      setError(err.response?.data?.message || "Erro ao realizar cadastro");
     }
   };
 
   return (
     <Box
       sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bgcolor: 'grey.100',
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundImage:
+          "linear-gradient(rgba(153, 208, 245, 0.5), rgba(153, 208, 245, 0.5)), url('/background.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
-      <Card sx={{ p: 4, width: '100%', maxWidth: 420 }}>
-        <Stack spacing={3}>
-          <Typography variant="h4" textAlign="center" fontWeight={700}>
+      <Card sx={{ width: "100%", maxWidth: 420, borderRadius: 5 }}>
+        <Stack
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: ".5rem",
+            py: 2,
+            bgcolor: palette.primary.dark,
+            color: "#fff",
+            minHeight: "100px",
+          }}
+        >
+          <img src="/logo_sps.png" alt="Logo SPS" height={40} width={40} />
+          <Stack
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "end",
+            }}
+          >
+            <Typography fontWeight={600} fontSize="2rem" lineHeight={1}>
+              SPS
+            </Typography>
+            <Typography fontWeight={400} fontSize="1rem">
+              Group
+            </Typography>
+          </Stack>
+        </Stack>
+
+        <Stack spacing={3} sx={{ p: 4 }}>
+          <Typography
+            variant="h5"
+            textAlign="start"
+            fontWeight={700}
+            color={palette.grey[700]}
+          >
             Criar conta
           </Typography>
 
@@ -66,7 +108,7 @@ export default function RegisterView() {
                 label="Nome"
                 fullWidth
                 autoComplete="name"
-                {...registerField('name')}
+                {...registerField("name")}
                 error={!!errors.name}
                 helperText={errors.name?.message}
               />
@@ -76,7 +118,7 @@ export default function RegisterView() {
                 type="email"
                 fullWidth
                 autoComplete="email"
-                {...registerField('email')}
+                {...registerField("email")}
                 error={!!errors.email}
                 helperText={errors.email?.message}
               />
@@ -86,7 +128,7 @@ export default function RegisterView() {
                 type="password"
                 fullWidth
                 autoComplete="new-password"
-                {...registerField('password')}
+                {...registerField("password")}
                 error={!!errors.password}
                 helperText={errors.password?.message}
               />
@@ -97,15 +139,21 @@ export default function RegisterView() {
                 size="large"
                 fullWidth
                 disabled={isSubmitting}
+                color="primary"
               >
-                {isSubmitting ? 'Cadastrando...' : 'Cadastrar'}
+                {isSubmitting ? "Cadastrando..." : "Cadastrar"}
               </Button>
             </Stack>
           </Box>
 
           <Typography textAlign="center" variant="body2">
-            Já tem uma conta?{' '}
-            <Link component={RouterLink} to={paths.auth.jwt.login} underline="hover">
+            Já tem uma conta?{" "}
+            <Link
+              color="primary"
+              component={RouterLink}
+              to={paths.auth.jwt.login}
+              underline="hover"
+            >
               Fazer login
             </Link>
           </Typography>
