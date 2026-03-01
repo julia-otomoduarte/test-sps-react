@@ -1,8 +1,8 @@
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
-import { useParams } from 'src/routes/hooks';
+import { useParams } from "src/routes/hooks";
 
-import UserDetailView from 'src/sections/users/view/user-detail-view';
+import UserDetailView from "src/sections/users/view/user-detail-view";
 
 // ----------------------------------------------------------------------
 
@@ -12,10 +12,10 @@ export default function UserDetailPage() {
   return (
     <>
       <Helmet>
-        <title>Dashboard: Detalhe do Usuário</title>
+        <title>Detalhe do Usuário</title>
       </Helmet>
 
-      <UserDetailView id={params.id || ''} />
+      <UserDetailView id={params.id || ""} />
     </>
   );
 }
