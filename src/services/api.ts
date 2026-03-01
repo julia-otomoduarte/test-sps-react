@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { HOST_API } from 'src/config-global';
 
 // ----------------------------------------------------------------------
 
 const api = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: HOST_API,
 });
 
 // Injeta o token automaticamente em todas as requisições autenticadas
