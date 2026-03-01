@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
@@ -83,8 +83,13 @@ export default function UserListView() {
               mr: 2,
             }}
           >
-            <Typography variant="body2" sx={{ opacity: 0.85 }}>
-              {authUser?.name}{" "}
+            <Typography
+              variant="body2"
+              component={Link}
+              to={paths.dashboard.user.detail(String(authUser?.id))}
+              sx={{ opacity: 0.85, color: "inherit", textDecoration: "none", "&:hover": { textDecoration: "underline" } }}
+            >
+              {authUser?.name}
             </Typography>
             <Chip label={translateUserType(authUser?.type ?? "")} color="info" />
           </Stack>
