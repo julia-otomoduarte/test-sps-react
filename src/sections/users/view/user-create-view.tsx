@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useForm, type Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
 import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -18,6 +19,7 @@ import { useAuthContext } from "src/auth/hooks";
 import { BooleanPermissionGuard } from "src/auth/guard";
 import { registerApi } from "src/services/api";
 import { paths } from "src/routes/paths";
+import { translateUserType } from "src/utils/translate-user-type";
 import { registerSchema, RegisterFormValues } from "../register.schema";
 
 // ----------------------------------------------------------------------
@@ -73,6 +75,17 @@ export default function UserCreateView() {
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               Cadastrar Usuário
             </Typography>
+            <Stack direction="row" alignItems="center" spacing={1} sx={{ mr: 2 }}>
+              <Typography
+                variant="body2"
+                component={Link}
+                to={paths.dashboard.user.detail(String(authUser?.id))}
+                sx={{ opacity: 0.85, color: "inherit", textDecoration: "none", "&:hover": { textDecoration: "underline" } }}
+              >
+                {authUser?.name}
+              </Typography>
+              <Chip label={translateUserType(authUser?.type ?? "")} color="info" />
+            </Stack>
             <Button variant="contained" color="secondary" onClick={handleLogout}>
               Sair
             </Button>

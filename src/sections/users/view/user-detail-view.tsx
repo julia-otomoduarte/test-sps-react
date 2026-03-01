@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useForm, type Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
 import Box from "@mui/material/Box";
@@ -139,6 +139,17 @@ export default function UserDetailView({ id }: Props) {
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               Detalhe do Usuário
             </Typography>
+            <Stack direction="row" alignItems="center" spacing={1} sx={{ mr: 2 }}>
+              <Typography
+                variant="body2"
+                component={Link}
+                to={paths.dashboard.user.detail(String(authUser?.id))}
+                sx={{ opacity: 0.85, color: "inherit", textDecoration: "none", "&:hover": { textDecoration: "underline" } }}
+              >
+                {authUser?.name}
+              </Typography>
+              <Chip label={translateUserType(authUser?.type ?? "")} color="info" />
+            </Stack>
             <Button
               variant="contained"
               color="secondary"
