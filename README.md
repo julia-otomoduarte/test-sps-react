@@ -7,6 +7,7 @@ A aplicação foi desenvolvida em React.ts para gerenciamento de usuários, inte
 
 - [Pré-requisitos](#pré-requisitos)
 - [Como rodar o projeto](#como-rodar-o-projeto)
+- [Conta de Administrador](#conta-de-administrador)
 - [Stack](#stack)
 - [Funcionalidades](#funcionalidades)
 - [Controle de Permissões](#controle-de-permissões)
@@ -44,6 +45,20 @@ yarn dev
 ```
 
 A aplicação estará disponível em `http://localhost:3001`.
+
+---
+
+## Conta de Administrador
+
+A API já vem com um usuário administrador pré-cadastrado para acesso inicial ao sistema:
+
+| Campo      | Valor                   |
+| ---------- | ----------------------- |
+| `id`       | `1`                     |
+| `name`     | `admin`                 |
+| `email`    | `admin@spsgroup.com.br` |
+| `type`     | `admin`                 |
+| `password` | `1234`                  |
 
 ---
 
