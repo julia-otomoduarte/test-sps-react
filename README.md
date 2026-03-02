@@ -138,8 +138,6 @@ Ações disponíveis (visíveis apenas para **admin** ou para o **próprio usuá
 | **Trocar Senha** | Abre um dialog para alterar a senha atual        |
 | **Deletar**      | Abre um dialog de confirmação e remove o usuário |
 
-> O botão **Deletar** não é exibido quando o usuário visualizado é do tipo `admin`, impedindo a exclusão do administrador do sistema.
-
 Todas as ações exibem notificações de sucesso ou erro via snackbar.
 
 > Rota protegida — requer autenticação.
@@ -172,10 +170,10 @@ Exibida para qualquer rota inexistente. O botão de retorno redireciona de forma
 
 O sistema possui dois perfis de usuário:
 
-| Perfil  | Permissões                                                                                        |
-| ------- | ------------------------------------------------------------------------------------------------- |
+| Perfil  | Permissões                                                                                                  |
+| ------- | ----------------------------------------------------------------------------------------------------------- |
 | `admin` | Visualiza, edita e troca senha de qualquer usuário; deleta usuários do tipo `user`; cadastra novos usuários |
-| `user`  | Visualiza todos os usuários, mas só edita, troca senha e deleta o próprio perfil                  |
+| `user`  | Visualiza todos os usuários, mas só edita, troca senha e deleta o próprio perfil                            |
 
 > Usuários do tipo `admin` **não podem ser deletados** pelo sistema. O cadastro de novos usuários é restrito a administradores autenticados.
 
