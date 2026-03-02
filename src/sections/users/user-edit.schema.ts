@@ -1,8 +1,10 @@
 import * as yup from 'yup';
+import { UserTypeValue } from './register.schema';
 
 export type UserEditFormValues = {
   name: string;
   email: string;
+  type?: UserTypeValue;
 };
 
 export const userEditSchema: yup.ObjectSchema<UserEditFormValues> = yup.object({
@@ -14,4 +16,8 @@ export const userEditSchema: yup.ObjectSchema<UserEditFormValues> = yup.object({
     .string()
     .required('Email é obrigatório')
     .email('Informe um email válido'),
+  type: yup
+    .mixed<UserTypeValue>()
+    .oneOf(['admin', 'user'])
+    .optional(),
 });

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useForm, type Resolver } from "react-hook-form";
+import { useForm, Controller, type Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
@@ -11,9 +11,13 @@ import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
+import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 import { useAuthContext } from "src/auth/hooks";
 import { BooleanPermissionGuard } from "src/auth/guard";
@@ -21,6 +25,7 @@ import { getUserApi, updateUserApi } from "src/services/api";
 import { paths } from "src/routes/paths";
 import { translateUserType } from "src/utils/translate-user-type";
 import { userEditSchema, UserEditFormValues } from "../user-edit.schema";
+import { USER_TYPE_OPTIONS } from "../register.schema";
 
 // ----------------------------------------------------------------------
 
@@ -39,10 +44,13 @@ export default function UserEditView({ id }: Props) {
   const canEdit =
     authUser?.type === "admin" || String(authUser?.id) === String(id);
 
+  const isAdmin = authUser?.type === "admin";
+
   const {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<UserEditFormValues>({
     resolver: yupResolver(userEditSchema) as Resolver<UserEditFormValues>,
@@ -50,7 +58,7 @@ export default function UserEditView({ id }: Props) {
 
   useEffect(() => {
     getUserApi(id)
-      .then((res) => reset({ name: res.data.name, email: res.data.email }))
+      .then((res) => reset({ name: res.data.name, email: res.data.email, type: res.data.type }))
       .catch((err) =>
         setPageError(err.response?.data?.message || "Erro ao carregar usuário"),
       )
@@ -59,7 +67,7 @@ export default function UserEditView({ id }: Props) {
 
   const onSubmit = async (data: UserEditFormValues) => {
     try {
-      await updateUserApi(id, { name: data.name, email: data.email });
+      await updateUserApi(id, { name: data.name, email: data.email, ...(isAdmin && data.type && { type: data.type }) });
       enqueueSnackbar("Salvo com sucesso!", { variant: "success" });
       navigate(paths.dashboard.user.detail(id));
     } catch (err: any) {
@@ -144,6 +152,25 @@ export default function UserEditView({ id }: Props) {
                     error={!!errors.email}
                     helperText={errors.email?.message}
                   />
+
+                  {isAdmin && (
+                    <Controller
+                      name="type"
+                      control={control}
+                      render={({ field }) => (
+                        <FormControl fullWidth disabled={isSubmitting}>
+                          <InputLabel id="type-label">Tipo de conta</InputLabel>
+                          <Select labelId="type-label" label="Tipo de conta" {...field} value={field.value ?? ""}>
+                            {USER_TYPE_OPTIONS.map((opt) => (
+                              <MenuItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      )}
+                    />
+                  )}
 
                   <Stack direction="row" spacing={2} justifyContent="flex-end">
                     <Button

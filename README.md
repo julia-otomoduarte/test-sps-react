@@ -97,6 +97,16 @@ Formulário de autenticação com **email** e **senha**. Ao realizar login com s
 
 ---
 
+### Cadastro — `/auth/register`
+
+Formulário público de criação de conta com os campos **nome**, **e-mail**, **senha** e **tipo de conta**.
+
+- O campo **Tipo de conta** é um select com as opções `Usuário` (padrão) e `Administrador`.
+- O valor selecionado (`user` ou `admin`) é enviado na requisição de cadastro.
+- Ao concluir, redireciona para a tela de login.
+
+---
+
 ### Lista de Usuários — `/dashboard`
 
 Tabela paginada com todos os usuários cadastrados no sistema. Cada linha exibe:
@@ -107,6 +117,10 @@ Tabela paginada com todos os usuários cadastrados no sistema. Cada linha exibe:
 Inclui controles de paginação com opções de 10, 25 ou 50 itens por página. O nome e o tipo do usuário autenticado são exibidos na barra superior.
 
 O botão **Cadastrar Usuário** é exibido acima da tabela exclusivamente para usuários do tipo `admin`.
+
+#### Cadastrar Usuário — `/dashboard/users/create`
+
+Formulário (restrito a `admin`) com os campos **nome**, **e-mail**, **senha** e **tipo de conta** (select com `Usuário` como padrão). O valor selecionado é enviado na requisição.
 
 > Rota protegida — requer autenticação.
 
@@ -137,6 +151,7 @@ Todas as ações exibem notificações de sucesso ou erro via snackbar.
 Formulário pré-preenchido com os dados atuais do usuário para edição de **nome** e **e-mail**.
 
 - Apenas **admin** ou o **próprio usuário** pode acessar a edição.
+- O campo **Tipo de conta** (select `Usuário` / `Administrador`) é exibido **somente para usuários do tipo `admin`**, permitindo alterar o perfil de outros usuários.
 - Usuários sem permissão são redirecionados automaticamente.
 - Exibe feedback de sucesso ou erro após salvar.
 

@@ -36,8 +36,8 @@ export interface LoginResponse {
 export const loginApi = (email: string, password: string) =>
   api.post<LoginResponse>('/login', { email, password });
 
-export const registerApi = (name: string, email: string, password: string) =>
-  api.post('/users', { name, email, password });
+export const registerApi = (name: string, email: string, password: string, type?: string) =>
+  api.post('/users', { name, email, password, ...(type && { type }) });
 
 
 export const getUsersApi = () =>
@@ -48,7 +48,7 @@ export const getUserApi = (id: string) =>
   api.get<User>(`/users/${id}`);
 
 
-export const updateUserApi = (id: string, data: { name?: string; email?: string }) =>
+export const updateUserApi = (id: string, data: { name?: string; email?: string; type?: string }) =>
   api.patch<User>(`/users/${id}`, data);
 
 

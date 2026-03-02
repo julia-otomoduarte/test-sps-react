@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm, type Resolver } from "react-hook-form";
+import { useForm, Controller, type Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
@@ -10,12 +10,16 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 import { useAuthContext } from "src/auth/hooks";
 import { paths } from "src/routes/paths";
-import { registerSchema, RegisterFormValues } from "../register.schema";
+import { registerSchema, RegisterFormValues, USER_TYPE_OPTIONS } from "../register.schema";
 import palette from "src/theme/palette";
 
 // ----------------------------------------------------------------------
@@ -30,15 +34,17 @@ export default function RegisterView() {
   const {
     register: registerField,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: yupResolver(registerSchema) as Resolver<RegisterFormValues>,
+    defaultValues: { type: "user" },
   });
 
   const onSubmit = async (data: RegisterFormValues) => {
     setError("");
     try {
-      await register(data.name, data.email, data.password);
+      await register(data.name, data.email, data.password, data.type);
       enqueueSnackbar("Cadastro realizado com sucesso!", {
         variant: "success",
       });
@@ -139,6 +145,23 @@ export default function RegisterView() {
                 {...registerField("password")}
                 error={!!errors.password}
                 helperText={errors.password?.message}
+              />
+
+              <Controller
+                name="type"
+                control={control}
+                render={({ field }) => (
+                  <FormControl fullWidth>
+                    <InputLabel id="type-label">Tipo de conta</InputLabel>
+                    <Select labelId="type-label" label="Tipo de conta" {...field}>
+                      {USER_TYPE_OPTIONS.map((opt) => (
+                        <MenuItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                )}
               />
 
               <Button

@@ -139,16 +139,29 @@ export default function UserDetailView({ id }: Props) {
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               Detalhe do Usuário
             </Typography>
-            <Stack direction="row" alignItems="center" spacing={1} sx={{ mr: 2 }}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={1}
+              sx={{ mr: 2 }}
+            >
               <Typography
                 variant="body2"
                 component={Link}
                 to={paths.dashboard.user.detail(String(authUser?.id))}
-                sx={{ opacity: 0.85, color: "inherit", textDecoration: "none", "&:hover": { textDecoration: "underline" } }}
+                sx={{
+                  opacity: 0.85,
+                  color: "inherit",
+                  textDecoration: "none",
+                  "&:hover": { textDecoration: "underline" },
+                }}
               >
                 {authUser?.name}
               </Typography>
-              <Chip label={translateUserType(authUser?.type ?? "")} color="info" />
+              <Chip
+                label={translateUserType(authUser?.type ?? "")}
+                color="info"
+              />
             </Stack>
             <Button
               variant="contained"
@@ -223,16 +236,14 @@ export default function UserDetailView({ id }: Props) {
                 Trocar Senha
               </Button>
 
-              {user?.type !== "admin" && (
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={() => setDeleteOpen(true)}
-                  startIcon={<Icon icon="material-symbols:delete" />}
-                >
-                  Deletar
-                </Button>
-              )}
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => setDeleteOpen(true)}
+                startIcon={<Icon icon="material-symbols:delete" />}
+              >
+                Deletar
+              </Button>
             </Stack>
           )}
         </Box>

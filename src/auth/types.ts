@@ -23,6 +23,6 @@ export type JWTContextType = {
   authenticated: boolean;
   unauthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string, userType?: string) => Promise<void>;
   logout: () => Promise<void>;
 };

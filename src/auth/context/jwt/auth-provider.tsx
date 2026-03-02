@@ -91,8 +91,8 @@ export function AuthProvider({ children }: Props) {
   }, []);
 
   const register = useCallback(
-    async (name: string, email: string, password: string) => {
-      await registerApi(name, email, password);
+    async (name: string, email: string, password: string, userType?: string) => {
+      await registerApi(name, email, password, userType);
       dispatch({ type: Types.REGISTER });
     },
     [],

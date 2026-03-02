@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm, type Resolver } from "react-hook-form";
+import { useForm, Controller, type Resolver } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
@@ -10,17 +10,21 @@ import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Alert from "@mui/material/Alert";
+import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 import { useAuthContext } from "src/auth/hooks";
 import { BooleanPermissionGuard } from "src/auth/guard";
 import { registerApi } from "src/services/api";
 import { paths } from "src/routes/paths";
 import { translateUserType } from "src/utils/translate-user-type";
-import { registerSchema, RegisterFormValues } from "../register.schema";
+import { registerSchema, RegisterFormValues, USER_TYPE_OPTIONS } from "../register.schema";
 
 // ----------------------------------------------------------------------
 
@@ -36,15 +40,17 @@ export default function UserCreateView() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: yupResolver(registerSchema) as Resolver<RegisterFormValues>,
+    defaultValues: { type: "user" },
   });
 
   const onSubmit = async (data: RegisterFormValues) => {
     setError("");
     try {
-      await registerApi(data.name, data.email, data.password);
+      await registerApi(data.name, data.email, data.password, data.type);
       enqueueSnackbar("Usuário cadastrado com sucesso!", { variant: "success" });
       navigate(paths.dashboard.root);
     } catch (err: any) {
@@ -126,6 +132,23 @@ export default function UserCreateView() {
                   {...register("password")}
                   error={!!errors.password}
                   helperText={errors.password?.message}
+                />
+
+                <Controller
+                  name="type"
+                  control={control}
+                  render={({ field }) => (
+                    <FormControl fullWidth>
+                      <InputLabel id="type-label">Tipo de conta</InputLabel>
+                      <Select labelId="type-label" label="Tipo de conta" {...field}>
+                        {USER_TYPE_OPTIONS.map((opt) => (
+                          <MenuItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  )}
                 />
 
                 <Button

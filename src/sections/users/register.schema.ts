@@ -1,9 +1,17 @@
 import * as yup from 'yup';
 
+export const USER_TYPE_OPTIONS = [
+  { label: 'Administrador', value: 'admin' },
+  { label: 'Usuário', value: 'user' },
+] as const;
+
+export type UserTypeValue = 'admin' | 'user';
+
 export type RegisterFormValues = {
   name: string;
   email: string;
   password: string;
+  type: UserTypeValue;
 };
 
 export const registerSchema: yup.ObjectSchema<RegisterFormValues> = yup.object({
@@ -19,4 +27,9 @@ export const registerSchema: yup.ObjectSchema<RegisterFormValues> = yup.object({
     .string()
     .required('Senha é obrigatória')
     .min(4, 'Senha deve ter pelo menos 4 caracteres'),
+  type: yup
+    .mixed<UserTypeValue>()
+    .oneOf(['admin', 'user'])
+    .required()
+    .default('user'),
 });
