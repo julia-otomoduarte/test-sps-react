@@ -21,11 +21,14 @@ export default api;
 // ----------------------------------------------------------------------
 // Tipos
 
+
 export interface User {
   id: string;
   name: string;
   email: string;
   type: 'admin' | 'user';
+  photo?: string;
+  documents?: string[];
 }
 
 export interface LoginResponse {
@@ -48,7 +51,7 @@ export const getUserApi = (id: string) =>
   api.get<User>(`/users/${id}`);
 
 
-export const updateUserApi = (id: string, data: { name?: string; email?: string; type?: string }) =>
+export const updateUserApi = (id: string, data: { name?: string; email?: string; type?: string, documents?: string[] }) =>
   api.patch<User>(`/users/${id}`, data);
 
 
@@ -58,3 +61,14 @@ export const updatePasswordApi = (id: string, oldPassword: string, newPassword: 
 
 export const deleteUserApi = (id: string) =>
   api.delete(`/users/${id}`);
+
+export const uploadUserDocumentApi = (id: string, file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  return api.post(`/users/${id}/upload`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};

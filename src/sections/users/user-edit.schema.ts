@@ -5,6 +5,8 @@ export type UserEditFormValues = {
   name: string;
   email: string;
   type?: UserTypeValue;
+  documents?: { file?: File; existingUrl?: string }[];
+  profileImage?: File | string;
 };
 
 export const userEditSchema: yup.ObjectSchema<UserEditFormValues> = yup.object({
@@ -20,4 +22,11 @@ export const userEditSchema: yup.ObjectSchema<UserEditFormValues> = yup.object({
     .mixed<UserTypeValue>()
     .oneOf(['admin', 'user'])
     .optional(),
+  documents: yup.array().of(
+  yup.object({
+    file: yup.mixed<File>(),
+    existingUrl: yup.string(),
+  })
+),
+    profileImage: yup.mixed<File | string>() ,
 });

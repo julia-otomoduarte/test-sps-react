@@ -5,9 +5,12 @@ import { useNavigate, Link } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
 import Box from "@mui/material/Box";
-
 import Card from "@mui/material/Card";
 import Chip from "@mui/material/Chip";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -36,6 +39,8 @@ import {
   ChangePasswordFormValues,
 } from "../change-password.schema";
 import { Icon } from "@iconify/react";
+import { Avatar } from "@mui/material";
+import { HOST_API } from "src/config-global";
 
 // ----------------------------------------------------------------------
 
@@ -145,6 +150,22 @@ export default function UserDetailView({ id }: Props) {
               spacing={1}
               sx={{ mr: 2 }}
             >
+              <Avatar
+                src={
+                  authUser?.photo ? `${HOST_API}${authUser.photo}` : undefined
+                }
+                alt={authUser?.name}
+                sx={{ width: 32, height: 32 }}
+              >
+                {!authUser?.photo && authUser?.name
+                  ? authUser.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .slice(0, 2)
+                      .toUpperCase()
+                  : null}
+              </Avatar>
               <Typography
                 variant="body2"
                 component={Link}
@@ -184,6 +205,20 @@ export default function UserDetailView({ id }: Props) {
 
                 <Divider />
 
+                <Avatar
+                  src={user?.photo ? `${HOST_API}${user.photo}` : undefined}
+                  alt={user?.name}
+                  sx={{ width: 64, height: 64 }}
+                >
+                  {!user?.photo && user?.name
+                    ? user.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .slice(0, 2)
+                        .toUpperCase()
+                    : null}
+                </Avatar>
                 <Stack direction="row" spacing={1} alignItems="center">
                   <Typography color="text.secondary" width={80}>
                     ID:
@@ -210,6 +245,54 @@ export default function UserDetailView({ id }: Props) {
                     color={user?.type === "admin" ? "primary" : "default"}
                   />
                 </Stack>
+
+                {user?.documents && user.documents.length > 0 && (
+                  <>
+                    <Divider />
+                    <Typography variant="body2" color="text.secondary">
+                      Documentos
+                    </Typography>
+                    <List
+                      dense
+                      disablePadding
+                      sx={{
+                        border: "1px solid",
+                        borderColor: "divider",
+                        borderRadius: 1,
+                      }}
+                    >
+                      {user.documents.map((doc, index) => (
+                        <Box key={index}>
+                          {index > 0 && <Divider />}
+                          <ListItem
+                            secondaryAction={
+                              <Button
+                                size="small"
+                                component="a"
+                                href={`${HOST_API}${doc}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Abrir
+                              </Button>
+                            }
+                          >
+                            <ListItemIcon sx={{ minWidth: 32 }}>
+                              <Icon icon="solar:file-text-bold" width={18} />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary={
+                                <Typography variant="body2" noWrap>
+                                  {doc.split("/").pop()}
+                                </Typography>
+                              }
+                            />
+                          </ListItem>
+                        </Box>
+                      ))}
+                    </List>
+                  </>
+                )}
               </Stack>
             </CardContent>
           </Card>

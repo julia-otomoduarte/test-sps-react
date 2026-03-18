@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useReducer, useCallback } from "react";
 
-import { loginApi, registerApi } from "src/services/api";
+import { loginApi, registerApi, getUserApi } from "src/services/api";
 
 import { setSession, isValidToken } from "./utils";
 import { AuthContext } from "./auth-context";
@@ -91,7 +91,12 @@ export function AuthProvider({ children }: Props) {
   }, []);
 
   const register = useCallback(
-    async (name: string, email: string, password: string, userType?: string) => {
+    async (
+      name: string,
+      email: string,
+      password: string,
+      userType?: string,
+    ) => {
       await registerApi(name, email, password, userType);
       dispatch({ type: Types.REGISTER });
     },
@@ -100,7 +105,18 @@ export function AuthProvider({ children }: Props) {
 
   const logout = useCallback(async () => {
     setSession(null);
+    localStorage.removeItem("user");
     dispatch({ type: Types.LOGOUT });
+  }, []);
+
+  const refreshUser = useCallback(async () => {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) return;
+    const { id } = JSON.parse(storedUser);
+    const response = await getUserApi(id);
+    const updatedUser = response.data;
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    dispatch({ type: Types.LOGIN, payload: { user: updatedUser } });
   }, []);
 
   const checkAuthenticated = state.user ? "authenticated" : "unauthenticated";
@@ -116,8 +132,9 @@ export function AuthProvider({ children }: Props) {
       login,
       register,
       logout,
+      refreshUser,
     }),
-    [login, logout, register, state.user, status],
+    [login, logout, register, refreshUser, state.user, status],
   );
 
   return (

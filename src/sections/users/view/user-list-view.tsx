@@ -22,8 +22,8 @@ import { useAuthContext } from "src/auth/hooks";
 import { getUsersApi, User } from "src/services/api";
 import { paths } from "src/routes/paths";
 import { translateUserType } from "src/utils/translate-user-type";
-import { Stack } from "@mui/material";
-
+import { Avatar, Stack } from "@mui/material";
+import { HOST_API } from "src/config-global";
 // ----------------------------------------------------------------------
 
 export default function UserListView() {
@@ -83,15 +83,37 @@ export default function UserListView() {
               mr: 2,
             }}
           >
+            <Avatar
+              src={authUser?.photo ? `${HOST_API}${authUser.photo}` : undefined}
+              alt={authUser?.name}
+              sx={{ width: 32, height: 32 }}
+            >
+              {!authUser?.photo && authUser?.name
+                ? authUser.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")
+                    .slice(0, 2)
+                    .toUpperCase()
+                : null}
+            </Avatar>
             <Typography
               variant="body2"
               component={Link}
               to={paths.dashboard.user.detail(String(authUser?.id))}
-              sx={{ opacity: 0.85, color: "inherit", textDecoration: "none", "&:hover": { textDecoration: "underline" } }}
+              sx={{
+                opacity: 0.85,
+                color: "inherit",
+                textDecoration: "none",
+                "&:hover": { textDecoration: "underline" },
+              }}
             >
               {authUser?.name}
             </Typography>
-            <Chip label={translateUserType(authUser?.type ?? "")} color="info" />
+            <Chip
+              label={translateUserType(authUser?.type ?? "")}
+              color="info"
+            />
           </Stack>
 
           <Button onClick={handleLogout} variant="contained" color="secondary">
@@ -140,6 +162,7 @@ export default function UserListView() {
                 <TableRow
                   sx={{ "& th": { fontWeight: 600, bgcolor: "grey.50" } }}
                 >
+                  <TableCell>Foto</TableCell>
                   <TableCell>ID</TableCell>
                   <TableCell>Nome</TableCell>
                   <TableCell>Email</TableCell>
@@ -157,6 +180,17 @@ export default function UserListView() {
                       navigate(paths.dashboard.user.detail(user.id))
                     }
                   >
+                    <TableCell>
+                      <Avatar
+                        src={
+                          user.photo ? `${HOST_API}${user.photo}` : undefined
+                        }
+                        alt={user.name}
+                        sx={{ width: 36, height: 36 }}
+                      >
+                        {!user.photo && user.name.charAt(0).toUpperCase()}
+                      </Avatar>
+                    </TableCell>
                     <TableCell
                       sx={{ color: "text.secondary", fontSize: "0.8rem" }}
                     >

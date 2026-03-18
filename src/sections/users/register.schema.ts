@@ -12,6 +12,9 @@ export type RegisterFormValues = {
   email: string;
   password: string;
   type: UserTypeValue;
+  documents?: { file?: File }[];
+  profileImage?: File;
+
 };
 
 export const registerSchema: yup.ObjectSchema<RegisterFormValues> = yup.object({
@@ -32,4 +35,10 @@ export const registerSchema: yup.ObjectSchema<RegisterFormValues> = yup.object({
     .oneOf(['admin', 'user'])
     .required()
     .default('user'),
+  documents: yup.array().of(
+  yup.object({
+    file: yup.mixed<File>(),
+  })
+),
+  profileImage: yup.mixed<File>(),
 });
